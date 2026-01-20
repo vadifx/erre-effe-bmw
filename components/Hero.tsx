@@ -8,13 +8,16 @@ export default function Hero() {
   const videoRefDesktop = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    let hlsMobile: Hls | null = null;
+    let hlsDesktop: Hls | null = null;
+
     // Video Mobile
     const videoMobile = videoRefMobile.current;
     if (videoMobile) {
       const videoSrcMobile = "https://bmw.scene7.com/is/content/BMW/f70_ice_stage_mob_sl-AVS.m3u8";
 
       if (Hls.isSupported()) {
-        const hlsMobile = new Hls();
+        hlsMobile = new Hls();
         hlsMobile.loadSource(videoSrcMobile);
         hlsMobile.attachMedia(videoMobile);
         
@@ -23,11 +26,6 @@ export default function Hero() {
             console.log("Autoplay prevented:", error);
           });
         });
-
-        // Cleanup per video mobile
-        return () => {
-          hlsMobile.destroy();
-        };
       } else if (videoMobile.canPlayType("application/vnd.apple.mpegurl")) {
         videoMobile.src = videoSrcMobile;
         videoMobile.play().catch((error) => {
@@ -42,7 +40,7 @@ export default function Hero() {
       const videoSrcDesktop = "https://bmw.scene7.com/is/content/BMW/f70_ice_stage_dsk_sl-AVS.m3u8";
 
       if (Hls.isSupported()) {
-        const hlsDesktop = new Hls();
+        hlsDesktop = new Hls();
         hlsDesktop.loadSource(videoSrcDesktop);
         hlsDesktop.attachMedia(videoDesktop);
         
@@ -51,11 +49,6 @@ export default function Hero() {
             console.log("Autoplay prevented:", error);
           });
         });
-
-        // Cleanup per video desktop
-        return () => {
-          hlsDesktop.destroy();
-        };
       } else if (videoDesktop.canPlayType("application/vnd.apple.mpegurl")) {
         videoDesktop.src = videoSrcDesktop;
         videoDesktop.play().catch((error) => {
@@ -63,6 +56,16 @@ export default function Hero() {
         });
       }
     }
+
+    // Cleanup unificato per entrambi i video
+    return () => {
+      if (hlsMobile) {
+        hlsMobile.destroy();
+      }
+      if (hlsDesktop) {
+        hlsDesktop.destroy();
+      }
+    };
   }, []);
 
   return (
