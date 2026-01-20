@@ -4,42 +4,83 @@ import { useEffect, useRef } from "react";
 import Hls from "hls.js";
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefMobile = useRef<HTMLVideoElement>(null);
+  const videoRefDesktop = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    // Video Mobile
+    const videoMobile = videoRefMobile.current;
+    if (videoMobile) {
+      const videoSrcMobile = "https://bmw.scene7.com/is/content/BMW/f70_ice_stage_mob_sl-AVS.m3u8";
 
-    const videoSrc = "https://bmw.scene7.com/is/content/BMW/f70_ice_stage_dsk_sl-AVS.m3u8";
+      if (Hls.isSupported()) {
+        const hlsMobile = new Hls();
+        hlsMobile.loadSource(videoSrcMobile);
+        hlsMobile.attachMedia(videoMobile);
+        
+        hlsMobile.on(Hls.Events.MANIFEST_PARSED, () => {
+          videoMobile.play().catch((error) => {
+            console.log("Autoplay prevented:", error);
+          });
+        });
 
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch((error) => {
+        // Cleanup per video mobile
+        return () => {
+          hlsMobile.destroy();
+        };
+      } else if (videoMobile.canPlayType("application/vnd.apple.mpegurl")) {
+        videoMobile.src = videoSrcMobile;
+        videoMobile.play().catch((error) => {
           console.log("Autoplay prevented:", error);
         });
-      });
+      }
+    }
 
-      return () => {
-        hls.destroy();
-      };
-    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      // Supporto nativo HLS (Safari)
-      video.src = videoSrc;
-      video.play().catch((error) => {
-        console.log("Autoplay prevented:", error);
-      });
+    // Video Desktop
+    const videoDesktop = videoRefDesktop.current;
+    if (videoDesktop) {
+      const videoSrcDesktop = "https://bmw.scene7.com/is/content/BMW/f70_ice_stage_dsk_sl-AVS.m3u8";
+
+      if (Hls.isSupported()) {
+        const hlsDesktop = new Hls();
+        hlsDesktop.loadSource(videoSrcDesktop);
+        hlsDesktop.attachMedia(videoDesktop);
+        
+        hlsDesktop.on(Hls.Events.MANIFEST_PARSED, () => {
+          videoDesktop.play().catch((error) => {
+            console.log("Autoplay prevented:", error);
+          });
+        });
+
+        // Cleanup per video desktop
+        return () => {
+          hlsDesktop.destroy();
+        };
+      } else if (videoDesktop.canPlayType("application/vnd.apple.mpegurl")) {
+        videoDesktop.src = videoSrcDesktop;
+        videoDesktop.play().catch((error) => {
+          console.log("Autoplay prevented:", error);
+        });
+      }
     }
   }, []);
 
   return (
     <div className="w-full relative">
+      {/* Video Mobile - visibile solo sotto MD */}
       <video
-        ref={videoRef}
-        className="w-full h-auto md:max-h-[600px] md:object-cover"
+        ref={videoRefMobile}
+        className="w-full h-auto md:hidden"
+        playsInline
+        muted
+        loop
+        autoPlay
+      />
+      
+      {/* Video Desktop - visibile solo da MD in su */}
+      <video
+        ref={videoRefDesktop}
+        className="hidden md:block w-full h-auto md:max-h-[600px] md:object-cover"
         playsInline
         muted
         loop

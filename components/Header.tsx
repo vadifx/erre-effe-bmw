@@ -68,15 +68,85 @@ export default function Header() {
       {/* Header principale fixed sopra Hero */}
       <div className="fixed top-0 left-0 right-0 h-[70px] bg-transparent w-full z-30">
         <div className="max-w-[1300px] 2xl:max-w-[1650px] mx-auto px-[24px] md:px-[32px] h-full flex items-center justify-between">
-        <Image
-          src="/img/logo.svg"
-          alt="Logo"
-          width={0}
-          height={55}
-          className="h-[20px] w-auto"
-          priority
-        />
-          <button onClick={toggleMenu} aria-label="Toggle menu">
+          <Image
+            src="/img/logo.svg"
+            alt="Logo"
+            width={0}
+            height={55}
+            className="h-[20px] w-auto"
+            priority
+          />
+          
+          {/* Navbar centrata - solo da MD in su */}
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
+            <a
+              href="#"
+              className="hover:opacity-80 transition-opacity"
+              style={{
+                color: '#f2f2f2',
+                fontFamily: 'var(--font-bmw-regular), Arial, Helvetica, sans-serif',
+                fontWeight: 400,
+                fontSize: '14px'
+              }}
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              className="hover:opacity-80 transition-opacity flex items-center gap-1"
+              style={{
+                color: '#f2f2f2',
+                fontFamily: 'var(--font-bmw-regular), Arial, Helvetica, sans-serif',
+                fontWeight: 400,
+                fontSize: '14px'
+              }}
+            >
+              Gruppo
+              <ChevronDown className="w-4 h-4" />
+            </a>
+            <a
+              href="#"
+              className="hover:opacity-80 transition-opacity flex items-center gap-1"
+              style={{
+                color: '#f2f2f2',
+                fontFamily: 'var(--font-bmw-regular), Arial, Helvetica, sans-serif',
+                fontWeight: 400,
+                fontSize: '14px'
+              }}
+            >
+              Auto nuove
+              <ChevronDown className="w-4 h-4" />
+            </a>
+            <a
+              href="#"
+              className="hover:opacity-80 transition-opacity flex items-center gap-1"
+              style={{
+                color: '#f2f2f2',
+                fontFamily: 'var(--font-bmw-regular), Arial, Helvetica, sans-serif',
+                fontWeight: 400,
+                fontSize: '14px'
+              }}
+            >
+              Auto usate
+              <ChevronDown className="w-4 h-4" />
+            </a>
+          </nav>
+
+          {/* Bottone Contattaci - solo da MD in su */}
+          <button
+            className="hidden md:block px-6 py-2 text-white rounded"
+            style={{
+              backgroundColor: '#1c69d4',
+              fontFamily: 'var(--font-bmw-regular), Arial, Helvetica, sans-serif',
+              fontWeight: 400,
+              fontSize: '14px'
+            }}
+          >
+            Contattaci
+          </button>
+
+          {/* Burger menu - solo mobile */}
+          <button onClick={toggleMenu} aria-label="Toggle menu" className="md:hidden">
             <Menu className="w-6 h-6 cursor-pointer" style={{ color: '#f2f2f2' }} />
           </button>
         </div>
