@@ -1,15 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const bmwTypeNextRegular = localFont({
+  src: "../public/fonts/BMWTypeNextTT-Regular.woff",
+  variable: "--font-bmw-regular",
+  weight: "400",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const bmwTypeNextBold = localFont({
+  src: "../public/fonts/BMWTypeNextTT-Bold.woff",
+  variable: "--font-bmw-bold",
+  weight: "700",
+  display: "swap",
+});
+
+const bmwTypeNextThin = localFont({
+  src: "../public/fonts/BMWTypeNextTT-Thin.woff",
+  variable: "--font-bmw-thin",
+  weight: "100",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${bmwTypeNextRegular.variable} ${bmwTypeNextBold.variable} ${bmwTypeNextThin.variable} antialiased`}
       >
         {children}
       </body>
